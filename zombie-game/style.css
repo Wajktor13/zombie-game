@@ -1,145 +1,147 @@
-body{
-    margin: 0;
-    background-color: black;
-    min-width: 900px;
+body {
+  margin: 0;
+  background-color: black;
+  min-width: 900px;
 }
 
-#game-board{
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    height: 100vh;
-    position: relative;
-    background-image: url(images/background.jpg);
-    background-size: 100% 100%;
-    overflow: hidden;
+#game-board {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100vh;
+  position: relative;
+  background-image: url(images/background.jpg);
+  background-size: 100% 100%;
+  overflow: hidden;
 }
 
-#gunsight{
-    width: 120px;
-    aspect-ratio: 1 / 1;
-    background-image: url(images/gunsight.png);
-    background-size: 100% 100%;
-    position: absolute;
-    z-index: 1;
-    pointer-events: none;
-    display: none;
+#gunsight {
+  width: 120px;
+  aspect-ratio: 1 / 1;
+  background-image: url(images/gunsight.png);
+  background-size: 100% 100%;
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  display: none;
 }
 
-#hud{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
+#hud {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
 }
 
-#top-hud{
-    width: 90%;
-    height: 100px;
-    padding: 40px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    position: absolute;
-    top: 0;
-    z-index: 1;
+#top-hud {
+  width: 90%;
+  height: 100px;
+  padding: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  z-index: 1;
 }
 
-#hud button{
-    height: 100px;
-    color: white;
-    font-size: 30px;
-    border-radius: 40px;
-    transition: transform 0.4s;
+#hud button {
+  height: 100px;
+  color: white;
+  font-size: 30px;
+  border-radius: 40px;
+  transition: transform 0.4s;
 }
 
-#start-game-btn{
-    width: max(30%, 200px);
-    margin-top: max(50vh, 300px);
-    background-color: green;
+#start-game-btn {
+  width: max(30%, 200px);
+  margin-top: max(50vh, 300px);
+  background-color: green;
 }
 
-#restart-game-btn{
-    width: 100%;
-    background-color: red;
+#restart-game-btn {
+  width: 100%;
+  background-color: red;
 }
 
-#hud button:hover{
-    transform: scale(1.15);
+#hud button:hover {
+  transform: scale(1.15);
+  cursor: pointer;
 }
 
-#hud button:active{
-    filter: brightness(0.8);
+#hud button:active {
+  filter: brightness(0.8);
 }
 
-#ending-hud{
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: red;
-    font-size: 100px;
-    font-weight: 900;
+#ending-hud {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: red;
+  font-size: 100px;
+  font-weight: 900;
 }
 
-#heart-container{
-    width: 500px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+#heart-container {
+  width: 500px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-.heart{
-    width: 120px;
-    aspect-ratio: 1 / 1;
-    background-image: url(images/full_heart.png);
-    background-size: 100% 100%;
+.heart {
+  width: 120px;
+  aspect-ratio: 1 / 1;
+  background-image: url(images/full_heart.png);
+  background-size: 100% 100%;
 }
 
-#score{
-    font-size: 50px;
-    color: white;
+#score {
+  font-size: 50px;
+  color: white;
 }
 
-#zombie-container{
-    width: 100%;
-    height: 25%;
-    position: relative;
+#zombie-container {
+  width: 100%;
+  height: 25%;
+  position: relative;
 }
 
-.zombie{
-    background: url(images/walkingdead.png);
-    width: 200px;
-    height: 312px;
-    border-top-left-radius: 90%;
-    border-top-right-radius: 30%;
-    border-bottom-left-radius: 100%;
-    border-bottom-right-radius: 80%;
-    position: absolute;
+.zombie {
+  background: url(images/walkingdead.png);
+  width: 200px;
+  height: 312px;
+  border-top-left-radius: 90%;
+  border-top-right-radius: 30%;
+  border-bottom-left-radius: 100%;
+  border-bottom-right-radius: 80%;
+  position: absolute;
 }
 
-.zombie-wrapper-move, .zombie-wrapper-scale{
-    position: absolute;
-    transform-origin: top;
+.zombie-move-wrapper,
+.zombie-scale-wrapper {
+  position: absolute;
+  transform-origin: top;
 }
 
-@keyframes walk{
-    0%{
-        background-position: 2000px;
-    }
+@keyframes walk {
+  0% {
+    background-position: 2000px;
+  }
 
-    100%{
-        background-position: 0;
-    }
+  100% {
+    background-position: 0;
+  }
 }
 
-@keyframes forward{
-    0%{
-        transform: translateX(max(100vw, 900px));
-    }
+@keyframes forward {
+  0% {
+    transform: translateX(max(100vw, 900px));
+  }
 
-    100%{
-        transform: translateX(-350px);
-    }
+  100% {
+    transform: translateX(-350px);
+  }
 }
