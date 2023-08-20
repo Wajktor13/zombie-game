@@ -5,6 +5,8 @@ const MAX_HEIGHT_SCALE = 1.8;
 const MIN_SPAWN_DELAY = 50;
 const MAX_SPAWN_DELAY = 1500;
 const ZOMBIE_IMG_PATH = "assets/images/walkingdead.png";
+const MAX_AMMO = 15;
+const RELOADING_TIME = 1500;
 let ZOMBIE_IMG_HEIGHT;
 
 const zombieContainer = document.getElementById("zombie-container");
@@ -12,6 +14,8 @@ const zombieContainer = document.getElementById("zombie-container");
 let health = 3;
 let score = 0;
 let gameRunning = false;
+let reloading = false;
+let current_ammo = 15;
 
 
 class Zombie {
@@ -31,6 +35,7 @@ class Zombie {
         this.zombieScaleWrapperDiv.classList.add("zombie-scale-wrapper");
         this.zombieDiv.classList.add("zombie");
 
+        this.zombieDiv.addEventListener("mousedown", gunFired)
         this.zombieDiv.addEventListener("mousedown", hitZombie);
 
         this.zombieMoveWrapperDiv.appendChild(this.zombieScaleWrapperDiv);
@@ -53,8 +58,14 @@ document.addEventListener("DOMContentLoaded", () => {
     
     gameBoard.addEventListener("mousemove", moveGunsight)
     gameBoard.addEventListener("mousedown", shotMissed)
+    gameBoard.addEventListener("mousedown", gunFired)
     startGameButton.addEventListener("click", runGame)
     restartGameButton.addEventListener("click", runGame)
+    document.addEventListener("keydown", function(event) {
+        if (event.key === "r") {
+            reloadGun();
+        }
+    });
     }
 );
 
@@ -67,7 +78,6 @@ async function runGame(event) {
 
 async function prepareGame() {
     let body = document.querySelector("body");
-    let gameBoard = document.getElementById("game-board");
     let gunSight = document.getElementById("gunsight");
     let startGameButton = document.getElementById("start-game-btn");
     let startWindow = document.getElementById("start-window");
@@ -82,9 +92,12 @@ async function prepareGame() {
     health = 3;
     gameRunning = false;
     score = 0;
-    changeScore(0);
+    updateScore(0);
+    reloading = false;
+    current_ammo = MAX_AMMO ;
   
     gunSight.style.display = "block";
+
     body.style.cursor = "none";
   
     startGameButton.setAttribute("disabled", "true");
@@ -149,12 +162,45 @@ function healthChanged() {
         }
 }
 
+function reloadGun() {
+    if (gameRunning && !reloading) {
+        playAudio("assets/sounds/reloading.wav", "0.5");
+        reloading = true;
+        current_ammo = MAX_AMMO;
+    
+        setTimeout(() => {
+            reloading = false;
+        }, RELOADING_TIME);
+    }
+
+}
+
+function gunFired() {
+    if (gameRunning) {
+        if (!reloading && current_ammo > 0) {
+            playAudio("assets/sounds/gunshot.mp3", "0.22");
+        } else if (current_ammo == 0) {
+            playAudio("assets/sounds/out_of_ammo.wav", "1");
+        }
+    }
+}
+
 function hitZombie(event) {
     event.stopPropagation();
-    playAudio("assets/sounds/gunshot.mp3", "0.22");
-    playAudio("assets/sounds/body_impact.wav", "0.22")
-    removeZombie(event.currentTarget);
-    changeScore(10);
+
+    if (!reloading && current_ammo > 0) {
+        current_ammo -= 1;
+        playAudio("assets/sounds/body_impact.wav", "0.25")
+        removeZombie(event.currentTarget);
+        updateScore(10);
+    }
+}
+
+function shotMissed() {
+    if (!reloading && current_ammo > 0) {
+        current_ammo -= 1;
+        updateScore(-5);
+    }
 }
 
 function removeZombie(zombieDivToRemove) {
@@ -170,14 +216,7 @@ function moveGunsight(event) {
     sight.style.left = event.x - sightWidth + "px";
 }
 
-function shotMissed() {
-    if (gameRunning) {
-        playAudio("assets/sounds/gunshot.mp3", "0.22");
-        changeScore(-5);
-    }
-}
-
-function changeScore(diff) {
+function updateScore(diff) {
     let scoreDiv = document.getElementById("score");
 
     score = Math.max(0, score + diff);
