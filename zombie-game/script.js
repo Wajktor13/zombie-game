@@ -66,6 +66,7 @@ async function prepareGame() {
     let body = document.querySelector("body");
     let gunSight = document.getElementById("gunsight");
     let startGameButton = document.getElementById("start-game-btn");
+    let startWindow = document.getElementById("start-window");
     let endingHud = document.getElementById("ending-hud");
     let restartGameButton = document.getElementById("restart-game-btn");
     let heart1 = document.getElementById("heart1");
@@ -82,8 +83,9 @@ async function prepareGame() {
     gunSight.style.display = "block";
     body.style.cursor = "none";
   
-    startGameButton.style.display = "none";
     startGameButton.setAttribute("disabled", "true");
+
+    startWindow.style.display = "none";
   
     endingHud.style.display = "none";
   

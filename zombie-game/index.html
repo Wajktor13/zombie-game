@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
     <title>Zombie Game</title>
@@ -24,8 +24,17 @@
                 </div>
                 <div id="score">SCORE : 0</div>
             </div>
-
-            <button id="start-game-btn">START GAME</button>
+            
+            <section id="start-window">
+                <h1>RULES</h1>
+                <div id="rules">
+                    <p>1. You have 3 lives</p>
+                    <p>2. Shoot by clicking on the screen</p>
+                    <p>3. You get 10 points for each zombie killed</p>
+                    <p>4. You lose 5 points if you miss</p>
+                </div>
+                <button id="start-game-btn">START GAME</button>
+            </section>
 
             <div id="ending-hud">
                 <p>GAME OVER</p>
