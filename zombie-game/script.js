@@ -4,8 +4,9 @@ const MIN_HEIGHT_SCALE = 0.35;
 const MAX_HEIGHT_SCALE = 1.8;
 const MIN_SPAWN_DELAY = 50;
 const MAX_SPAWN_DELAY = 1500;
-const ZOMBIE_IMG_PATH = "images/walkingdead.png";
+const ZOMBIE_IMG_PATH = "assets/images/walkingdead.png";
 let ZOMBIE_IMG_HEIGHT;
+
 const zombieContainer = document.getElementById("zombie-container");
 
 let health = 3;
@@ -46,17 +47,19 @@ class Zombie {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    let startGameButton = document.getElementById('start-game-btn')
-    let restartGameButton = document.getElementById('restart-game-btn')
+    let startGameButton = document.getElementById("start-game-btn")
+    let restartGameButton = document.getElementById("restart-game-btn")
+    let gameBoard = document.getElementById("game-board")
     
-    document.addEventListener('mousemove', moveGunsight)
-    document.addEventListener('mousedown', shotMissed)
-    startGameButton.addEventListener('click', runGame)
-    restartGameButton.addEventListener('click', runGame)
+    gameBoard.addEventListener("mousemove", moveGunsight)
+    gameBoard.addEventListener("mousedown", shotMissed)
+    startGameButton.addEventListener("click", runGame)
+    restartGameButton.addEventListener("click", runGame)
     }
 );
 
-async function runGame() {
+async function runGame(event) {
+    event.stopPropagation();
     await prepareGame();
     gameRunning = true;
     spawnZombie();
@@ -64,6 +67,7 @@ async function runGame() {
 
 async function prepareGame() {
     let body = document.querySelector("body");
+    let gameBoard = document.getElementById("game-board");
     let gunSight = document.getElementById("gunsight");
     let startGameButton = document.getElementById("start-game-btn");
     let startWindow = document.getElementById("start-window");
@@ -73,7 +77,7 @@ async function prepareGame() {
     let heart2 = document.getElementById("heart2");
     let heart3 = document.getElementById("heart3");
 
-    [heart1, heart2, heart3].forEach((heart) => {heart.style.backgroundImage = "url(images/full_heart.png)"});
+    [heart1, heart2, heart3].forEach((heart) => {heart.style.backgroundImage = "url(assets/images/full_heart.png)"});
   
     health = 3;
     gameRunning = false;
@@ -130,15 +134,15 @@ function healthChanged() {
     switch (health) {
         case 2:
             let heart3 = document.getElementById("heart3");
-            heart3.style.backgroundImage = "url(images/empty_heart.png)";
+            heart3.style.backgroundImage = "url(assets/images/empty_heart.png)";
             break;
         case 1:
             let heart2 = document.getElementById("heart2");
-            heart2.style.backgroundImage = "url(images/empty_heart.png)";
+            heart2.style.backgroundImage = "url(assets/images/empty_heart.png)";
             break;
         case 0:
             let heart1 = document.getElementById("heart1");
-            heart1.style.backgroundImage = "url(images/empty_heart.png)";
+            heart1.style.backgroundImage = "url(assets/images/empty_heart.png)";
             gameRunning = false;
             zombieContainer.innerHTML = "";
             endGame();
@@ -147,6 +151,8 @@ function healthChanged() {
 
 function hitZombie(event) {
     event.stopPropagation();
+    playAudio("assets/sounds/gunshot.mp3", "0.22");
+    playAudio("assets/sounds/body_impact.wav", "0.22")
     removeZombie(event.currentTarget);
     changeScore(10);
 }
@@ -165,7 +171,10 @@ function moveGunsight(event) {
 }
 
 function shotMissed() {
-    changeScore(-5);
+    if (gameRunning) {
+        playAudio("assets/sounds/gunshot.mp3", "0.22");
+        changeScore(-5);
+    }
 }
 
 function changeScore(diff) {
@@ -188,6 +197,12 @@ function endGame() {
     gunSight.style.display = "none";
     body.style.cursor = "default";
   }
+
+function playAudio(audioPath, volume) {
+    const gunshotAudio = new Audio(audioPath);
+    gunshotAudio.volume = volume;
+    gunshotAudio.play();
+}
 
 function randomInt(min, max) {
     return Math.floor(randomFloat(min, max));

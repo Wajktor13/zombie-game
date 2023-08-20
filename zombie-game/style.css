@@ -10,7 +10,7 @@ body {
   justify-content: flex-end;
   height: 100vh;
   position: relative;
-  background-image: url(images/background.jpg);
+  background-image: url(assets/images/background.jpg);
   background-size: 100% 100%;
   overflow: hidden;
 }
@@ -18,7 +18,7 @@ body {
 #gunsight {
   width: 120px;
   aspect-ratio: 1 / 1;
-  background-image: url(images/gunsight.png);
+  background-image: url(assets/images/gunsight.png);
   background-size: 100% 100%;
   position: absolute;
   z-index: 1;
@@ -121,7 +121,7 @@ body {
 .heart {
   width: 120px;
   aspect-ratio: 1 / 1;
-  background-image: url(images/full_heart.png);
+  background-image: url(assets/images/full_heart.png);
   background-size: 100% 100%;
 }
 
@@ -137,7 +137,7 @@ body {
 }
 
 .zombie {
-  background: url(images/walkingdead.png);
+  background: url(assets/images/walkingdead.png);
   width: 200px;
   height: 312px;
   border-top-left-radius: 90%;
