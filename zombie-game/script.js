@@ -55,12 +55,15 @@ document.addEventListener("DOMContentLoaded", () => {
     let startGameButton = document.getElementById("start-game-btn")
     let restartGameButton = document.getElementById("restart-game-btn")
     let gameBoard = document.getElementById("game-board")
+    let reloadButton = document.getElementById("reload-btn")
     
     gameBoard.addEventListener("mousemove", moveGunsight)
     gameBoard.addEventListener("mousedown", shotMissed)
     gameBoard.addEventListener("mousedown", gunFired)
     startGameButton.addEventListener("click", runGame)
     restartGameButton.addEventListener("click", runGame)
+    reloadButton.addEventListener("mousedown", (event) => {event.stopPropagation()})
+    reloadButton.addEventListener("click", reloadGun)
     document.addEventListener("keydown", function(event) {
         if (event.key === "r") {
             reloadGun();
@@ -190,9 +193,9 @@ function hitZombie(event) {
     event.stopPropagation();
 
     if (!reloading && current_ammo > 0) {
-        updateAmmo(-1);
         playAudio("assets/sounds/body_impact.wav", "0.28")
         removeZombie(event.currentTarget);
+        updateAmmo(-1);
         updateScore(10);
     }
 }

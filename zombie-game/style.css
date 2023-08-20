@@ -59,7 +59,7 @@ body {
   background-color: rgb(242, 242, 242);
   border-radius: 10px;
   height: 300px;
-  width: 600px;
+  width: 700px;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -158,11 +158,27 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 10px;
 }
 
 #ammo-status {
   color: white;
   font-size: 25px;
+}
+
+.bullet-hole {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  z-index: 1;
+}
+
+#reload-btn {
+  width: 150px !important;
+  height: 50px !important;
+  margin-top: 20px;
+  background-color: black;
+  border: 2px solid white;
 }
 
 @media screen and (max-width: 1200px) {
@@ -185,6 +201,10 @@ body {
   #ending-hud {
     font-size: 40px;
     margin-top: 60px;
+  }
+
+  #ammo {
+    margin-top: 70px;
   }
 }
 
