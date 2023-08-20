@@ -5,7 +5,7 @@ const MAX_HEIGHT_SCALE = 1.8;
 const MIN_SPAWN_DELAY = 50;
 const MAX_SPAWN_DELAY = 1500;
 const ZOMBIE_IMG_PATH = "assets/images/walkingdead.png";
-const MAX_AMMO = 15;
+const MAX_AMMO = 20;
 const RELOADING_TIME = 1500;
 let ZOMBIE_IMG_HEIGHT;
 
@@ -94,7 +94,8 @@ async function prepareGame() {
     score = 0;
     updateScore(0);
     reloading = false;
-    current_ammo = MAX_AMMO ;
+    current_ammo = MAX_AMMO;
+    updateAmmo(0);
   
     gunSight.style.display = "block";
 
@@ -166,10 +167,10 @@ function reloadGun() {
     if (gameRunning && !reloading) {
         playAudio("assets/sounds/reloading.wav", "0.5");
         reloading = true;
-        current_ammo = MAX_AMMO;
     
         setTimeout(() => {
             reloading = false;
+            updateAmmo(MAX_AMMO);
         }, RELOADING_TIME);
     }
 
@@ -189,16 +190,16 @@ function hitZombie(event) {
     event.stopPropagation();
 
     if (!reloading && current_ammo > 0) {
-        current_ammo -= 1;
-        playAudio("assets/sounds/body_impact.wav", "0.25")
+        updateAmmo(-1);
+        playAudio("assets/sounds/body_impact.wav", "0.28")
         removeZombie(event.currentTarget);
         updateScore(10);
     }
 }
 
 function shotMissed() {
-    if (!reloading && current_ammo > 0) {
-        current_ammo -= 1;
+    if (gameRunning && !reloading && current_ammo > 0) {
+        updateAmmo(-1);
         updateScore(-5);
     }
 }
@@ -221,6 +222,13 @@ function updateScore(diff) {
 
     score = Math.max(0, score + diff);
     scoreDiv.innerText = `SCORE : ${score}`;
+}
+
+function updateAmmo(diff) {
+    let ammoStatusDiv = document.getElementById("ammo-status");
+
+    current_ammo = Math.min(Math.max(0, current_ammo + diff), MAX_AMMO);
+    ammoStatusDiv.innerText = `${current_ammo} / ${MAX_AMMO}`;
 }
 
 function endGame() {

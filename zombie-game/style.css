@@ -153,6 +153,18 @@ body {
   transform-origin: top;
 }
 
+#ammo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#ammo-status {
+  color: white;
+  font-size: 25px;
+}
+
 @media screen and (max-width: 1200px) {
   #heart-container {
     width: 350px;
