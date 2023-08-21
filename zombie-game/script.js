@@ -168,7 +168,7 @@ function healthChanged() {
 
 function reloadGun() {
     if (gameRunning && !reloading) {
-        playAudio("assets/sounds/reloading.wav", "0.5");
+        playAudio("assets/sounds/gun_reloading.mp3", "0.5");
         reloading = true;
     
         setTimeout(() => {
@@ -182,7 +182,7 @@ function reloadGun() {
 function gunFired() {
     if (gameRunning) {
         if (!reloading && current_ammo > 0) {
-            playAudio("assets/sounds/gunshot.mp3", "0.22");
+            playAudio("assets/sounds/gunshot.mp3", "0.20");
         } else if (current_ammo == 0) {
             playAudio("assets/sounds/out_of_ammo.wav", "1");
         }
@@ -193,7 +193,7 @@ function hitZombie(event) {
     event.stopPropagation();
 
     if (!reloading && current_ammo > 0) {
-        playAudio("assets/sounds/body_impact.wav", "0.28")
+        playAudio("assets/sounds/body_impact.wav", "0.25")
         removeZombie(event.currentTarget);
         updateAmmo(-1);
         updateScore(10);
@@ -249,9 +249,9 @@ function endGame() {
   }
 
 function playAudio(audioPath, volume) {
-    const gunshotAudio = new Audio(audioPath);
-    gunshotAudio.volume = volume;
-    gunshotAudio.play();
+    const audio = new Audio(audioPath);
+    audio.volume = volume;
+    audio.play();
 }
 
 function randomInt(min, max) {
