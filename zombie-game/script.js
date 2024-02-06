@@ -52,23 +52,23 @@ class Zombie {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    let startGameButton = document.getElementById("start-game-btn")
-    let restartGameButton = document.getElementById("restart-game-btn")
-    let gameBoard = document.getElementById("game-board")
-    let reloadButton = document.getElementById("reload-btn")
-    
-    gameBoard.addEventListener("mousemove", moveGunsight)
-    gameBoard.addEventListener("mousedown", shotMissed)
-    gameBoard.addEventListener("mousedown", gunFired)
-    startGameButton.addEventListener("click", runGame)
-    restartGameButton.addEventListener("click", runGame)
-    reloadButton.addEventListener("mousedown", (event) => {event.stopPropagation()})
-    reloadButton.addEventListener("click", reloadGun)
-    document.addEventListener("keydown", function(event) {
-        if (event.key === "r") {
-            reloadGun();
-        }
-    });
+        let startGameButton = document.getElementById("start-game-btn")
+        let restartGameButton = document.getElementById("restart-game-btn")
+        let gameBoard = document.getElementById("game-board")
+        let reloadButton = document.getElementById("reload-btn")
+        
+        gameBoard.addEventListener("mousemove", moveGunsight)
+        gameBoard.addEventListener("mousedown", shotMissed)
+        gameBoard.addEventListener("mousedown", gunFired)
+        startGameButton.addEventListener("click", runGame)
+        restartGameButton.addEventListener("click", runGame)
+        reloadButton.addEventListener("mousedown", (event) => {event.stopPropagation()})
+        reloadButton.addEventListener("click", reloadGun)
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "r") {
+                reloadGun();
+            }
+        });
     }
 );
 
@@ -112,6 +112,11 @@ async function prepareGame() {
   
     restartGameButton.setAttribute("disabled", "true");
 
+    await laodZombieImg();
+    await loadAudio();
+}
+
+async function laodZombieImg() {
     const zombieImg = new Image();
     zombieImg.src = ZOMBIE_IMG_PATH;
 
@@ -121,6 +126,30 @@ async function prepareGame() {
             resolve();
         });
     });
+}
+
+async function loadAudio() {
+    const audioUrls = [
+        "assets/sounds/body_impact.wav",
+        "assets/sounds/body_impact.wav",
+        "assets/sounds/body_impact.wav",
+        "assets/sounds/body_impact.wav"
+    ];
+
+    const audio = new Audio();
+
+    for (let i = 0; i < audioUrls.length; i++) {
+        audio.src = audioUrls[i];
+
+        await new Promise((resolve) => {
+            
+            audio.addEventListener("canplaythrough", () => {
+                resolve();
+            });
+
+            audio.load();
+        });
+    }
 }
 
 function spawnZombie() {
