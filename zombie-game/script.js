@@ -16,6 +16,7 @@ let score = 0;
 let gameRunning = false;
 let reloading = false;
 let current_ammo = 15;
+let sound_on = true;
 
 
 class Zombie {
@@ -52,23 +53,31 @@ class Zombie {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-        let startGameButton = document.getElementById("start-game-btn")
-        let restartGameButton = document.getElementById("restart-game-btn")
-        let gameBoard = document.getElementById("game-board")
-        let reloadButton = document.getElementById("reload-btn")
+        let startGameButton = document.getElementById("start-game-btn");
+        let restartGameButton = document.getElementById("restart-game-btn");
+        let gameBoard = document.getElementById("game-board");
+        let reloadButton = document.getElementById("reload-btn");
+        let toggleSoundButton = document.getElementById("toggle-sound-btn");
         
-        gameBoard.addEventListener("mousemove", moveGunsight)
-        gameBoard.addEventListener("mousedown", shotMissed)
-        gameBoard.addEventListener("mousedown", gunFired)
-        startGameButton.addEventListener("click", runGame)
-        restartGameButton.addEventListener("click", runGame)
-        reloadButton.addEventListener("mousedown", (event) => {event.stopPropagation()})
-        reloadButton.addEventListener("click", reloadGun)
+        gameBoard.addEventListener("mousemove", moveGunsight);
+        gameBoard.addEventListener("mousedown", shotMissed);
+        gameBoard.addEventListener("mousedown", gunFired);
+
+        startGameButton.addEventListener("click", runGame);
+
+        restartGameButton.addEventListener("click", runGame);
+
+        reloadButton.addEventListener("mousedown", (event) => {event.stopPropagation()});
+        reloadButton.addEventListener("click", reloadGun);
+
         document.addEventListener("keydown", function(event) {
             if (event.key === "r") {
                 reloadGun();
             }
         });
+
+        toggleSoundButton.addEventListener("click", toggleSound);
+        toggleSoundButton.addEventListener("mousedown", (event) => {event.stopPropagation()});
     }
 );
 
@@ -222,7 +231,7 @@ function hitZombie(event) {
     event.stopPropagation();
 
     if (!reloading && current_ammo > 0) {
-        playAudio("assets/sounds/body_impact.wav", "0.25")
+        playAudio("assets/sounds/body_impact.wav", "0.25");
         removeZombie(event.currentTarget);
         updateAmmo(-1);
         updateScore(10);
@@ -278,9 +287,23 @@ function endGame() {
   }
 
 function playAudio(audioPath, volume) {
-    const audio = new Audio(audioPath);
-    audio.volume = volume;
-    audio.play();
+    if (sound_on) {
+        const audio = new Audio(audioPath);
+        audio.volume = volume;
+        audio.play();
+    }
+}
+
+function toggleSound() {
+    let toggleSoundButton = document.getElementById("toggle-sound-btn");
+
+    if (sound_on) {
+        toggleSoundButton.style.backgroundImage = "url(assets/images/sound_muted.png)";
+    } else {
+        toggleSoundButton.style.backgroundImage = "url(assets/images/sound_unmuted.png)";
+    }
+
+    sound_on = !sound_on;
 }
 
 function randomInt(min, max) {
